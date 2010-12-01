@@ -1,1 +1,114 @@
-duraconf - A collection of hardened configuration files for SSL/TLS services
+duraconf - 
+	 A collection of hardened configuration files for SSL/TLS services
+
+Hopefully this will help you make a more informed choice about what cipher list
+should be used for different applications. What you find here are recommended
+configurations, you should seriously consider using these, but you have to make
+some choices. When you pick a cipher list, you have a couple different options
+of how you go about it:
+
+1. make a very specific declaration of what is acceptable. This has the
+   advantage of being able to define very closely of what you want, but the
+   disadvantage of having to stay on top of the latest crypto advancements, with
+   every crypto library upgrade.
+
+2. make a general declaration of which cipher list to use. this has the
+   advantage of allowing you to rely on your crypto libraries to make
+   (hopefully) informed choices for you (and to deactivate known
+   bad/weak/recently broken) ciphers while you don't have the burden of ensuring
+   that they are always resulting in a good cipher suite. The disadvantage is
+   that you cannot fine tune what exactly you get in return.
+
+3. A mixture of being specific and letting your crypto library decide from
+   general statements. This can be useful if, for example, you find out that
+   some particular crypto has become too weak, for example you might use a
+   generic list but then exclude MD5, because your crypto libraries haven't
+   removed that yet.
+
+Generally it seems safer to have the crypto library take the bulk of the
+decision since it should be for the most part fire-and-forget, while the other
+options require that you always stay up to date on things and tweak as needed.
+
+For practical use, and for people who can afford to follow crypto news, a
+mixture of both is surely a good idea. So start with the general cipher list and
+when you become aware that something is bad then just add this specific part to
+your otherwise general cipher list until the crypto library defaults get updated
+to fix that.
+
+Unfortunately, its not possible to come up with one cipher configuration that is
+going to work for all configurations. There are many different programs that
+implement different versions of libraries that have different ciphers
+available. In fact, a different versions of the same program may be linked
+against different libraries which have different ciphers available.
+
+The cipher lists you will find here actually vary depending on which version of
+the crypto library that you have. For example, if you were to find this list
+recommended:
+
+HIGH:MEDIUM:!aNULL:!SSLv2:!MD5:@STRENGTH
+
+In one version of openssl this will mean the following list of ciphers:
+
+$ openssl ciphers -v 'HIGH:MEDIUM:!aNULL:!SSLv2:!MD5:@STRENGTH'
+
+DHE-RSA-AES256-SHA      SSLv3 Kx=DH       Au=RSA  Enc=AES(256)  Mac=SHA1
+DHE-DSS-AES256-SHA      SSLv3 Kx=DH       Au=DSS  Enc=AES(256)  Mac=SHA1
+AES256-SHA              SSLv3 Kx=RSA      Au=RSA  Enc=AES(256)  Mac=SHA1
+EDH-RSA-DES-CBC3-SHA    SSLv3 Kx=DH       Au=RSA  Enc=3DES(168) Mac=SHA1
+EDH-DSS-DES-CBC3-SHA    SSLv3 Kx=DH       Au=DSS  Enc=3DES(168) Mac=SHA1
+DES-CBC3-SHA            SSLv3 Kx=RSA      Au=RSA  Enc=3DES(168) Mac=SHA1
+DHE-RSA-AES128-SHA      SSLv3 Kx=DH       Au=RSA  Enc=AES(128)  Mac=SHA1
+DHE-DSS-AES128-SHA      SSLv3 Kx=DH       Au=DSS  Enc=AES(128)  Mac=SHA1
+AES128-SHA              SSLv3 Kx=RSA      Au=RSA  Enc=AES(128)  Mac=SHA1
+RC4-SHA                 SSLv3 Kx=RSA      Au=RSA  Enc=RC4(128)  Mac=SHA1
+
+In a newer openssl, this list of ciphers will be different:
+
+$ openssl ciphers -v 'HIGH:MEDIUM:!aNULL:!SSLv2:!MD5:@STRENGTH'
+
+ECDH-RSA-AES128-SHA     SSLv3 Kx=ECDH/RSA   Au=ECDH   Enc=AES(128)      Mac=SHA1
+ECDH-ECDSA-AES128-SHA   SSLv3 Kx=ECDH/ECDSA Au=ECDH   Enc=AES(128)      Mac=SHA1
+AES128-SHA              SSLv3 Kx=RSA        Au=RSA    Enc=AES(128)      Mac=SHA1
+CAMELLIA128-SHA         SSLv3 Kx=RSA        Au=RSA    Enc=Camellia(128) Mac=SHA1
+PSK-AES128-CBC-SHA      SSLv3 Kx=PSK        Au=PSK    Enc=AES(128)      Mac=SHA1
+
+
+It is also worth noting that this is setting a policy, and your site may have
+different policies, depending on your intended audience. There are many
+questions to consider in determining a policy. For example, in the worst case,
+when a client doesn't support the higher strength ciphers my server supports, do
+I want to keep up the image that medium strength ciphers are secure enough in my
+specific use case, environment and opponents? Or should I not allow anything but
+the highest strength ciphers, and those clients that do not support them are
+just denied?  Its likely that in many cases there is no possibility of making it
+clear to the user that their setup does not allow for secure use of your
+services, and what their options are.  I _think_, at least with apache, it
+should be possible to redirect users whose setup doesn't provide a compatible
+cipher suite, to an informational web page which explains further steps they can
+and should take (i have no idea how)..
+
+Unfortunately, in most cases, users will not get any message at all and they
+will have no clue why they are shut out. This could result in unhappy users with
+no idea of where to turn, and potentially a higher support burden.
+
+Notes on format of cipher designations
+--------------------------------------
+
+Format of cipher designations differ, but in general they follow the format
+described in ciphers(5). A few notes:
+
+The order specified is the preference order, and the list is separated by
+colons. The list can be specific ciphers (eg. RC4-SHA), a list of suites
+containing a certain algorith (SHA1), or a cipher suite of a certain type
+(TLSv1). There are also cipher strings which are a grouping of different ciphers
+into a specific category (eg. HIGH).
+
+When removing ciphers that you do not want, you have a choice between indicating
+! or -, the difference is subtle but important. It's good practice to use ! if
+you really do not want this class to ever get used, and to use - when you want
+to allow them to be still used if you later added something to your existing
+cipher list.
+
+Finally, there is also the @STRENGTH parameter, which sorts the cipher list in
+order of encryption algorithm key length.
+
