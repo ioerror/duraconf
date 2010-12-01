@@ -3,6 +3,9 @@ It would be useful to have cipher hardened SSL/TLS configurations for:
     varnish
     stunnel
     ejabberd
+    MTAs (postfix, exim, etc.)
+    IPSec
+    imap/pop (courier/dovecot)
     other starttls services
 
     openssh
