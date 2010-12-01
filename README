@@ -1,5 +1,4 @@
-duraconf - 
-	 A collection of hardened configuration files for SSL/TLS services
+duraconf - A collection of hardened configuration files for SSL/TLS services
 
 Hopefully this will help you make a more informed choice about what cipher list
 should be used for different applications. What you find here are recommended
