@@ -1,0 +1,8 @@
+It would be useful to have cipher hardened SSL/TLS configurations for:
+
+    varnish
+    stunnel
+    ejabberd
+    other starttls services
+
+    openssh
