@@ -1,0 +1,2 @@
+Ciphers aes256-ctr
+MACs hmac-sha1
