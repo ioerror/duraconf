@@ -24,6 +24,12 @@ of how you go about it:
    generic list but then exclude MD5, because your crypto libraries haven't
    removed that yet.
 
+4. Decide on a threat model for possible attacks that may expose an important
+   private key. Ciphers are often offered in a mode that provides Perfect
+   Forward Secrecy. While there are performance considerations, if you run a
+   high security operation where traffic disclosure would be a serious problem,
+   it is an important property to consider.
+
 Generally it seems safer to have the crypto library take the bulk of the
 decision since it should be for the most part fire-and-forget, while the other
 options require that you always stay up to date on things and tweak as needed.
@@ -39,6 +45,29 @@ going to work for all configurations. There are many different programs that
 implement different versions of libraries that have different ciphers
 available. In fact, a different versions of the same program may be linked
 against different libraries which have different ciphers available.
+
+An important configuration issue for service operators and users is
+understanding Perfect Forward Secrecy. Generally, PFS sessions are
+computationally more expensive than connections without PFS properties.
+
+It is extremely important to remember that using SSL and/or TLS does not ensure
+that your traffic is encrypted for all time. Generally, SSL/TLS services offer
+two general modes of operation - one mode is ephemerally keyed and the other is not.
+
+A TLS server that only offers AES256-SHA is strong against an attacker who will
+never recovery the secret key used by the server and who cannot break AES256.
+However, if an attacker is able to recover the server's key, the attacker will be able
+to retroactively decrypt all traffic that has been recorded when the AES256-SHA
+cipher is in use. If that same server uses an ephemeral cipher such as
+DHE-RSA-AES256-SHA, the attacker cannot recover previous encrypted sesssions
+without breaking RSA and AES256 for *each* session.
+
+In both cases, when the attacker has the private key, all future communications
+with the server are unsafe. Clients generally deal with this by looking up a
+revokation list or by using something like the OCSP. Realistically, they're in
+a lot of trouble and that kind of trouble is out of scope. If you're in doubt
+it's probably a reasonable thing to use DHE or EDH modes unless you have load
+issues.
 
 The cipher lists you will find here actually vary depending on which version of
 the crypto library that you have. For example, if you were to find this list
