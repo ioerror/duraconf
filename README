@@ -60,7 +60,7 @@ However, if an attacker is able to recover the server's key, the attacker will b
 to retroactively decrypt all traffic that has been recorded when the AES256-SHA
 cipher is in use. If that same server uses an ephemeral cipher such as
 DHE-RSA-AES256-SHA, the attacker cannot recover previous encrypted sesssions
-without breaking RSA and AES256 for *each* session.
+without breaking RSA and/or AES256 for *each* session.
 
 In both cases, when the attacker has the private key, all future communications
 with the server are unsafe. Clients generally deal with this by looking up a
