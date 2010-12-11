@@ -140,3 +140,7 @@ cipher list.
 Finally, there is also the @STRENGTH parameter, which sorts the cipher list in
 order of encryption algorithm key length.
 
+Suggested reading
+-----------------
+
+https://www.eff.org/pages/how-deploy-https-correctly
