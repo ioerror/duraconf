@@ -13,3 +13,5 @@ It would be useful to have cipher hardened SSL/TLS configurations for:
 This is probably the optimal cipher suite for most modern sites:
 'ECDHE-RSA-AES128-SHA:ECDHE-RSA-RC4-SHA:ECDHE-RSA-AES256-SHA:ECDHE-RSA-DES-CBC3-SHA:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA:EDH-RSA-DES-CBC3-SHA:AES128-SHA:RC4-SHA:AES256-SHA:DES-CBC3-SHA'
 
+It would also be useful to have code samples that ensure using popular SSL/TLS
+libraries is safe, when possible.
