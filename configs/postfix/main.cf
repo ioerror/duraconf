@@ -1,0 +1,35 @@
+
+# This is an example of a high security TLSv1 enabled STARTTLS postfix server
+# The server only allows modes that provide perfect forward secrecy, they are
+# required. Anonymous cipher modes are disabled.
+#
+#  Supported Server Cipher(s):
+#    Accepted  TLSv1  256 bits  DHE-RSA-AES256-SHA
+#    Accepted  TLSv1  128 bits  DHE-RSA-AES128-SHA
+#
+#  Prefered Server Cipher(s):
+#    TLSv1  256 bits  DHE-RSA-AES256-SHA
+#
+# Add the following to an already configured Postfix main.cf and place {private
+# key, cert} in /etc/postfix/example.com-{key,cert}.pem; if you don't want to
+# pay a CA for a cert, it is reasonable to generate a key like so:
+#
+#    openssl req -new -x509 -key noisebridge.net-key.pem -out noisebridge.net-cert.pem
+#
+# If you want to pay for a CA cert, see your CA vendor for cert req generation info.
+#
+# This configuration requires postfix 2.5.x linked against a modern openssl
+# (such as libssl0.9.8) for TLS support.
+#
+smtpd_tls_cert_file=/etc/postfix/noisebridge.net-cert.pem
+smtpd_tls_key_file=/etc/postfix/noisebridge.net-key.pem
+smtpd_tls_ciphers = high
+smtpd_tls_exclude_ciphers = aNULL, MD5, DES, 3DES, DES-CBC3-SHA, RC4-SHA, AES256-SHA, AES128-SHA
+smtpd_use_tls =yes
+smtp_tls_protocols = !SSLv2, SSLv3, TLSv1
+smtpd_tls_mandatory_protocols = TLSv1
+smtp_tls_note_starttls_offer = yes
+smtpd_tls_received_header = yes
+smtpd_tls_session_cache_database = btree:${queue_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
+
