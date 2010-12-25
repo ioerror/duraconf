@@ -14,6 +14,7 @@
 # key, cert} in /etc/postfix/example.com-{key,cert}.pem; if you don't want to
 # pay a CA for a cert, it is reasonable to generate a key like so:
 #
+#    openssl genrsa -out noisebridge.net-key.pem 128
 #    openssl req -new -x509 -key noisebridge.net-key.pem -out noisebridge.net-cert.pem
 #
 # If you want to pay for a CA cert, see your CA vendor for cert req generation info.
