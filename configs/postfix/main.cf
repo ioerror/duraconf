@@ -33,4 +33,9 @@ smtp_tls_note_starttls_offer = yes
 smtpd_tls_received_header = yes
 smtpd_tls_session_cache_database = btree:${queue_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
-
+# If you use a StartSSL certificate, download StartSSL's intermediate
+# certificate (http://www.startssl.com/certs/sub.class1.server.ca.pem)
+# to /etc/ssl/certs, and uncomment these directives:
+#
+# smtpd_tls_CAfile=/etc/ssl/certs/sub.class1.server.ca.pem
+# smtp_tls_CAfile=$smtpd_tls_CAfile
