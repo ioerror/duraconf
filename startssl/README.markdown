@@ -8,7 +8,7 @@ The CA which we'll use is StartSSL. They provide basic certificates for free, al
 
 A keypair can be generated with OpenSSL:
 
-    openssl req -new -newkey rsa:2048 -keyout example.com.key -nodes -out example.com.csr
+    openssl req -new -newkey rsa:2048 -sha256 -keyout example.com.key -nodes -out example.com.csr
 
 This command will prompt you for a country name, state name etc. *All of this can be ignored*. Just hit enter to accept the defaults because StartSSL doesn't use that information.
 
