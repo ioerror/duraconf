@@ -51,5 +51,5 @@ smtp_tls_exclude_ciphers = eNULL, aNULL, MD5, DES, 3DES, EXP, PSK, SRP, DSS, DES
 smtp_tls_session_cache_database = btree:${queue_directory}/smtp_scache
 
 # Generic (Client & Server) options
-tls_high_cipherlist =  EECDH+ECDSA+AESGCM,EECDH+aRSA+AESGCM,EECDH+ECDSA+SHA384,EECDH+ECDSA+SHA256,EECDH+aRSA+SHA384,EECDH+aRSA+SHA256
+tls_high_cipherlist =  EECDH+ECDSA+AESGCM,EECDH+aRSA+AESGCM,EECDH+ECDSA+SHA384,EECDH+ECDSA+SHA256,EECDH+aRSA+SHA384,EECDH+aRSA+SHA256,EECDH+aRSA+AES
 tls_random_source = dev:/dev/urandom
