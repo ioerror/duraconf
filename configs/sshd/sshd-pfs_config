@@ -8,13 +8,18 @@ Protocol 2
 #    ssh-keygen -T /etc/ssh/moduli -f /tmp/moduli
 KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 
-# Authentication keys & algorithms
+# Server authentication
 # 1. Ed25519 - generate key using 
 #    ssh-keygen -t ed25519 -f ssh_host_ed25519_key < /dev/null
 # 2. RSA - generate key using
 #    ssh-keygen -t rsa -b 4096 -f ssh_host_rsa_key < /dev/null
 HostKey /etc/ssh/ssh_host_ed25519_key
 HostKey /etc/ssh/ssh_host_rsa_key
+
+# Client authentication
+ChallengeResponseAuthentication no
+PasswordAuthentication no
+PubkeyAuthentication yes
 
 # Specifies the allowed ciphers
 # 1. Chacha20-Poly1305 - Authenticated encryption, message length encrypted
@@ -23,10 +28,7 @@ HostKey /etc/ssh/ssh_host_rsa_key
 Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
 
 # Specifies the available MAC (message authentication code) algorithms.
-# 1. Encrypt-then-MAC with HMAC-SHA2 - provable security
-# 2. Encrypt-then-MAC with HMAC-RIPEMD160 - provable security
-# 3. Encrypt-then-MAC with UMAC128 - provable security
-# 4. [DISABLED] Encrypt-and-MAC with various algorithms - no security proof
+# 1. Encrypt-then-MAC with at least 128 bit tags and keys - provable security
+# 2. Encrypt-and-MAC with at least 128 bit tags and keys - no security proof
 #    probably fine with a CTR cipher, don't use them with CBC
-MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com
-#MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,hmac-ripemd160,umac-128
