@@ -30,3 +30,11 @@ KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
 
 # Keep visual indication of potential key compromission
 VisualHostKey yes
+
+# Verify via the SSHFP DNS RR that the fingerprint matches
+# but still ask for confirmation
+VerifyHostKeyDNS ask
+
+# Hash hosts names and IP in the known_hosts file :
+# make it harder to map the network in case of intrusion
+hashknownhosts yes
