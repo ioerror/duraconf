@@ -8,4 +8,4 @@ Ciphers aes256-ctr
 # The default is: hmac-md5,hmac-sha1,umac-64@openssh.com,hmac-ripemd160,
 # hmac-sha1-96,hmac-md5-96,hmac-sha2-256,hmac-sha256-96,hmac-sha2-512,
 # hmac-sha2-512-96
-MACs hmac-sha2-512
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha1-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
